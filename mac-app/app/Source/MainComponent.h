@@ -2,6 +2,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include "DeckView.h"
 #include "StudioLink.h"
+#include "IcecastSource.h"
 
 class MainComponent : public juce::AudioAppComponent, private juce::Timer {
 public:
@@ -17,6 +18,9 @@ private:
     void loadInto(DeckChannel&, const juce::File&);
     void chooseFile(DeckChannel&);
     void openSettings();
+    void toggleLive();
+    void startLive();
+    IcecastSource::Settings liveSettings() const;
     void connect();
     void kill(const juce::String& mode);
     juce::var status();
@@ -25,11 +29,12 @@ private:
     DeckChannel a, b; DeckView va { a, "A", juce::Colour(0xff2f8bff) }, vb { b, "B", juce::Colour(0xffff4fa0) };
     juce::Slider xfader; std::atomic<float> xf { 0.5f };
     etb::Crossfader curve; etb::GainSmoother smooth;
-    juce::TextButton killBtn { "KILL" }, restoreBtn { "RESTORE" }, settingsBtn { "SERVER" };
+    juce::TextButton killBtn { "KILL" }, restoreBtn { "RESTORE" }, settingsBtn { "SERVER" }, goLiveBtn { "GO LIVE" };
     juce::Label linkLbl, airLbl;
     juce::AudioFormatManager formats; std::unique_ptr<juce::FileChooser> chooser;
     std::vector<float> tmpL[2], tmpR[2];
     double sr = 44100.0; bool killHeld = false; juce::uint32 killDownAt = 0;
+    IcecastSource live;
     StudioLink link; juce::Image logo; juce::String airMode { "?" };
     struct KillMouse : juce::MouseListener { MainComponent& m; explicit KillMouse(MainComponent& o) : m(o) {}
         void mouseDown(const juce::MouseEvent&) override { m.killDownAt = juce::Time::getMillisecondCounter(); m.killHeld = true; }

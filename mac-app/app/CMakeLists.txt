@@ -14,7 +14,7 @@ juce_add_gui_app(ETBStudio
 juce_add_binary_data(ETBStudioData SOURCES Resources/logo-256.png Resources/lockup.png)
 
 target_sources(ETBStudio PRIVATE
-    Source/Main.cpp Source/MainComponent.cpp Source/StudioLink.cpp Source/DeckView.cpp)
+    Source/Main.cpp Source/MainComponent.cpp Source/StudioLink.cpp Source/DeckView.cpp Source/IcecastSource.cpp)
 if(APPLE)
     target_sources(ETBStudio PRIVATE Source/platform/SecretStore_mac.mm)
     target_link_libraries(ETBStudio PRIVATE "-framework Security")
