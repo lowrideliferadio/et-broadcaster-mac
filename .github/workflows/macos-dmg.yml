@@ -1,5 +1,5 @@
 # Builds the ET Broadcaster studio app on a real macOS runner and uploads the .dmg as an artifact.
-# Public repo: standard GitHub-hosted runners (including macos-14) are free and do not use the
+# Public repo: standard GitHub-hosted runners (including macos-15) are free and do not use the
 # private-repo included compute allowance. Private repos bill macos minutes at $0.062/min (10x Linux).
 name: macOS DMG
 on:
@@ -13,7 +13,7 @@ on:
     tags: ["v*"]
 jobs:
   dmg:
-    runs-on: macos-14            # Apple Silicon (arm64) runner
+    runs-on: macos-15            # Apple Silicon (arm64) runner
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
