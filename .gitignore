@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+*.swp
+mac-app/third_party/
+mac-app/cmake-app/
+mac-app/cmake-work/
+mac-app/cmake-mac-*/
+mac-app/packaging-out/
+mac-app/tests/renders/
+mac-app/**/*.log
+*.dmg
+*.dmg.sha256

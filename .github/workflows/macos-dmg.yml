@@ -1,0 +1,41 @@
+# Builds the ET Broadcaster studio app on a real macOS runner and uploads the .dmg as an artifact.
+# Public repo: standard GitHub-hosted runners (including macos-14) are free and do not use the
+# private-repo included compute allowance. Private repos bill macos minutes at $0.062/min (10x Linux).
+name: macOS DMG
+on:
+  workflow_dispatch:
+    inputs:
+      universal:
+        description: "Universal (arm64 + x86_64) instead of arm64 only"
+        type: boolean
+        default: false
+  push:
+    tags: ["v*"]
+jobs:
+  dmg:
+    runs-on: macos-14            # Apple Silicon (arm64) runner
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache JUCE
+        uses: actions/cache@v4
+        with:
+          path: mac-app/third_party/JUCE
+          key: juce-9.0.5
+      - name: Tools
+        run: brew install create-dmg
+      - name: Build app + DMG
+        working-directory: mac-app
+        env:
+          UNIVERSAL: ${{ inputs.universal && '1' || '' }}
+        run: ./build-dmg.sh
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: ET-Broadcaster-dmg
+          path: |
+            mac-app/packaging-out/*.dmg
+            mac-app/packaging-out/*.sha256
+            mac-app/packaging-out/scratch-tests-macos.txt
+          if-no-files-found: error
+          retention-days: 30
