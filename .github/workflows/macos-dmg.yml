@@ -13,7 +13,7 @@ on:
     tags: ["v*"]
 jobs:
   dmg:
-    runs-on: macos-15            # Apple Silicon (arm64) runner
+    runs-on: macos-latest           # Apple Silicon (arm64) runner
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
